@@ -16,7 +16,7 @@ return new class extends Migration
     $table->string('serial_number')->unique();
     $table->string('location');
     $table->string('status')->default('active'); // active, inactive
-    $table->decimal('last_reading', 8, 2)->nullable()->change(); 
+    $table->decimal('last_reading', 8, 2)->default(0.00);
     $table->timestamps();
         });
     }
@@ -26,6 +26,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('smart_meters');
+        Schema::table('smart_meters', function (Blueprint $table) {
+            $table->dropColumn('last_reading');
+        });
     }
 };
